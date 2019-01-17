@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>箭头</title>
+    <style>
+        #canvas{
+            background-color: #f0ad4e;
+        }
+    </style>
 </head>
 <body>
+<canvas id="canvas" height="200" width="200">
+    <span>版本不支持</span>
+</canvas>
 
+
+<script>
+
+    let c = document.getElementById('canvas');
+    let ct = c.getContext('2d');
+
+
+    function drawTriangle(x,y){
+        ct.fillStyle = "gray";
+        ct.moveTo(x,y);
+        ct.lineTo(x+20,y);
+        ct.lineTo(x,y+20);
+        ct.lineTo(x,y);
+        // ct.rotate(90);
+        ct.fill();
+    }
+   drawTriangle(100,100);
+
+    // document.onmousemove = function(e){
+    //     var e = e || event;
+    //     var x  = e.pageX - c.getBoundingClientRect().left;
+    //     var y  = e.pageY - c.getBoundingClientRect().top;
+    //     console.log(x,y);
+    // }
+
+</script>
 </body>
 </html>
