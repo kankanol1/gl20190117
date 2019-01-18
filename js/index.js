@@ -41,7 +41,7 @@
         oDiv = document.createElement('div');
         oDiv.className = "insert";
         if(dataInfo.name){
-            console.log(dataInfo);
+            // console.log(dataInfo);
             const h4 = document.createElement('h4');
             const p = document.createElement('p');
             h4.innerHTML = dataInfo.name +"<a href='http://www.gl-data.com/'>查看详细信息>></a>";
@@ -81,39 +81,7 @@
         oBox.appendChild(oDiv);
     }
 
-//创建div显示企业支付关系图
-    function createElementPay(link,nodes,x,y){
-        let oDiv  = document.createElement('div');
-        oDiv.className = 'pay';
-        let h4 = document.createElement('h4');
-        h4.innerHTML = "支付关系";
-        let hr = document.createElement('hr');
-        oDiv.appendChild(h4);
-        oDiv.appendChild(hr);
-        for(let i =0;i<nodes.length;i++){
-            if(nodes[i].id == link.endNode){
-                let p =document.createElement('p');
-                p.innerHTML = "收款方：" + "<span>"+nodes[i].name+"</span>";
-                oDiv.appendChild(p);
-            }
-            if(nodes[i].id == link.startNode){
-                let p =document.createElement('p');
-                p.innerHTML = "付款方：" + "<span>"+nodes[i].name+"</span>";
-                oDiv.appendChild(p);
-            }
 
-        }
-        if(link.count){
-            let p =document.createElement('p');
-            p.innerHTML = "支付次数：" + "<span>"+link.count+"</span>";
-            oDiv.appendChild(p);
-        }
-        oDiv.style.left = x + "px";
-        oDiv.style.top= y + "px";
-        oBox.appendChild(oDiv);
-        drawLineTwo(checkIndex(link.startNode,nodes),checkIndex(link.endNode,nodes),link.count);
-
-    }
 
     /*px:点的x坐标
       py:点的y坐标
@@ -328,13 +296,63 @@
     /**************************************************数据加载和应用************************************************/
 
     $.getJSON('./json/data.json','',function(dataInfo){
+
+
+
+        //创建div显示企业支付关系图
+        function createElementPay(link,nodes,x,y){
+            let oDiv  = document.createElement('div');
+            oDiv.className = 'pay';
+            let h4 = document.createElement('h4');
+            h4.innerHTML = "支付关系";
+            let hr = document.createElement('hr');
+            oDiv.appendChild(h4);
+            oDiv.appendChild(hr);
+            for(let i =0;i<nodes.length;i++){
+                if(nodes[i].id == link.endNode){
+                    let p =document.createElement('p');
+                    p.innerHTML = "收款方：" + "<span>"+nodes[i].name+"</span>";
+                    oDiv.appendChild(p);
+                }
+                if(nodes[i].id == link.startNode){
+                    let p =document.createElement('p');
+                    p.innerHTML = "付款方：" + "<span>"+nodes[i].name+"</span>";
+                    oDiv.appendChild(p);
+                }
+
+            }
+            if(link.count){
+                let p =document.createElement('p');
+                p.innerHTML = "支付次数：" + "<span>"+link.count+"</span>";
+                oDiv.appendChild(p);
+            }
+            oDiv.style.left = x + "px";
+            oDiv.style.top= y + "px";
+            oDiv.addEventListener('click',function(){
+                oBox.removeChild(oDiv);
+                ct.clearRect(0,0,c.width,c.height);
+                drawing(nodes,links,centerNodes);
+
+                // flag_dra=0
+            })
+
+            oBox.appendChild(oDiv);
+            drawLineTwo(checkIndex(link.startNode,nodes),checkIndex(link.endNode,nodes),link.count);
+
+        }
+
         dataC = dataInfo.data;
         // console.log(dataC);//检验是否读取数据
         let links = dataC.links,
             nodes = dataC.nodes,
             centerNodes = dataC.centerNodes;
 
+
+
         nodes = checkData(nodes);// 去重
+        function addData(){
+            drawing(nodes,links,centerNodes)
+        };
         let space = 100;//画布的旁白空间
         //随机添加节点坐标
         for(let i=0;i<nodes.length;i++){
@@ -394,12 +412,14 @@
                 ct.clearRect(0,0,c.width,c.height);
                 drawing(nodes,links,centerNodes);
                 oBox.removeChild(oDiv);
-            }else if(oBox.querySelector('.pay')){
+            }
+            if(oBox.querySelector('.pay')){
                 let oDiv = oBox.querySelector('.pay');
                 ct.clearRect(0,0,c.width,c.height);
                 drawing(nodes,links,centerNodes);
                 oBox.removeChild(oDiv);
             }
+
             let oldTime = (new Date()).getTime();
             let ed = ev || event;
             let xd = ed.clientX - c.getBoundingClientRect().left;
@@ -408,8 +428,10 @@
             for(let i=0;i<nodes.length;i++){
                 let sqVal = Math.sqrt(Math.pow(xd-nodes[i].position_X,2)+Math.pow(yd-nodes[i].position_Y,2));
                 if(sqVal < radius + lineWidth){
-                    sq = i
+                    sq = i;
+                    break;
                 }
+
             }
             if(sq > -1){
                 document.onmousemove = function(ev){
@@ -440,20 +462,20 @@
                         function checkC(x,y){
                             for(let i=0;i<nodes.length;i++){
                                 if(Math.sqrt( Math.pow(x - nodes[i].position_X, 2) + Math.pow(y - nodes[i].position_Y, 2)) < nodes[i].radius+nodes[i].lineWidth){
-                                    flag_dra += 1;
-                                    if(flag_dra == 2){
-                                        flag_dra -= 2;
-                                        ct.clearRect(0,0,c.width,c.height);
-                                        drawing(nodes,links,centerNodes);
-                                        if(oBox.getElementsByClassName("insert").length){
-                                            // console.log("测试点击消除");
-                                            for(let s =0;s<oBox.getElementsByClassName("insert").length;s++){
-                                                oBox.removeChild(oBox.getElementsByClassName("insert")[s]);
-                                            }
-                                        }
-
-                                    }
-                                    else {
+                                    // flag_dra += 1;
+                                    // if(flag_dra == 2){
+                                    //     flag_dra -= 2;
+                                    //     ct.clearRect(0,0,c.width,c.height);
+                                    //     drawing(nodes,links,centerNodes);
+                                    //     if(oBox.getElementsByClassName("insert").length){
+                                    //         // console.log("测试点击消除");
+                                    //         for(let s =0;s<oBox.getElementsByClassName("insert").length;s++){
+                                    //             oBox.removeChild(oBox.getElementsByClassName("insert")[s]);
+                                    //         }
+                                    //     }
+                                    //
+                                    // }
+                                    // else {
                                         if(checkPoint(i,nodes,centerNodes)){
                                             ct.beginPath();
                                             ct.strokeStyle = "#dd63c5";
@@ -468,7 +490,7 @@
                                         }
                                         createElementDiv(nodes[i].propertyList,i,nodes);
                                     }
-                                }
+                                // }
                             }
                             if(oBox.querySelector('.insert')){
                                 let oDiv = oBox.querySelector('.insert');
@@ -476,9 +498,10 @@
                                     ct.clearRect(0,0,c.width,c.height);
                                     drawing(nodes,links,centerNodes);
                                     oBox.removeChild(oDiv);
-                                    flag_dra=0
+                                    // flag_dra=0
                                 })
                             }
+
                         }
                     }
                 }
@@ -501,11 +524,39 @@
 
                     if(h<2 && angleA<Math.PI/2 && angleB<Math.PI/2 ){
                         createElementPay(links[j],nodes,xd,yd);
+
                         // console.log(angleA,angleA);//角度确认
                         return false;
                     }
 
                 }
+
+                if(oBox.querySelector('.insert')){
+                    let oDiv = oBox.querySelector('.insert');
+                    ct.clearRect(0,0,c.width,c.height);
+                    drawing(nodes,links,centerNodes);
+                    oBox.removeChild(oDiv);
+                }
+                if(oBox.querySelector('.pay')){
+                    let oDiv = oBox.querySelector('.pay');
+                    ct.clearRect(0,0,c.width,c.height);
+                    drawing(nodes,links,centerNodes);
+                    oBox.removeChild(oDiv);
+                }
+                // if(oBox.querySelector('.pay')){
+                //     console.log("测试");
+                //     let oDiv = oBox.querySelector('.pay');
+                //     oDiv.addEventListener('click',function(){
+                //         oBox.removeChild(oDiv);
+                //         ct.clearRect(0,0,c.width,c.height);
+                //         drawing(nodes,links,centerNodes);
+                //
+                //         // flag_dra=0
+                //     })
+                // }
+
+
+
             }
         }
     });
