@@ -19,8 +19,6 @@
         }
         div.insert{
             padding: 10px;
-            /*height: 100px;*/
-            /*width: 150px;*/
             border: 1px solid red;
             border-radius: 10px;
             background-color: white;
@@ -60,14 +58,13 @@
     </canvas>
 </div>
 
-<script src="js/jquery-1.12.4.js"></script>
-<script src="json/data.json" ></script>
+<script src="./../js/jquery-1.12.4.js"></script>
 <script>
     const c = document.getElementById('canvas');
     c.width = document.documentElement.clientWidth * 0.8;
     c.height = document.documentElement.clientHeight *0.8;
     const ct = c.getContext('2d');
-   // 获取数据
+
 
     //剔除重复数据
     function checkData(data){
@@ -182,18 +179,18 @@
 
 
 
-    let data,
+    let dataC,
         radius = 20,
-        lineWidth = 5;
-    let oBox = document.getElementById('box');
+        lineWidth = 5,
+        oBox = document.getElementById('box');
 
 
    $.getJSON('./json/data.json','',function(dataInfo){
-       data = dataInfo.data;
-       console.log(data);
-       let links = data.links,
-           nodes = data.nodes,
-           centerNodes = data.centerNodes;
+       dataC = dataInfo.data;
+       console.log(dataC);
+       let links = dataC.links,
+           nodes = dataC.nodes,
+           centerNodes = dataC.centerNodes;
 
        nodes = checkData(nodes);
        console.log(nodes.length);
