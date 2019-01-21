@@ -34,20 +34,20 @@
             nodes = dataC.nodes,
             centerNodes = dataC.centerNodes;
         nodes = checkData(nodes);// 去重
-        function addData(){
+       /* function addData(){
             drawing(nodes,links,centerNodes)
-        };
-        // let space = 100;//画布的旁白空间
+        };*/
+        let space = 100;//画布的旁白空间
 
 
 
 
 
         //随机布局
-      /*  for(let i=0;i<nodes.length;i++){
+        for(let i=0;i<nodes.length;i++){
             nodes[i].position_X = (c.width - 2 * space) * Math.random() + space;
             nodes[i].position_Y = (c.height - 2 * space) * Math.random() + space;
-        }*/
+        }
 
 
 
@@ -61,37 +61,33 @@
 
 
         //矩形布局
-    function rectangle(){
-        let l=150;
-        let juX = l;
-        let juY = l;
-        for(let i=0;i<nodes.length;i++){
-            if(i%10 == 9){
-                juY = juY +l;
-                juX = l;
-            }else{
-                nodes[i].position_X = juX;
-                nodes[i].position_Y =juY;
-                juX  = juX+l;
+      /*  function rectangle(){
+            let l=150;
+            let juX = l;
+            let juY = l;
+            for(let i=0;i<nodes.length;i++){
+                if(i%10 == 9){
+                    juY = juY +l;
+                    juX = l;
+                }else{
+                    nodes[i].position_X = juX;
+                    nodes[i].position_Y =juY;
+                    juX  = juX+l;
+                }
+
             }
-
         }
-    }
-    rectangle();
+        rectangle();*/
 
-
-
-
-
-
+        //分图布局
         //分图 重新绘制坐标点
 
-   /*     let matrix = [];
+        let matrix = [];
         for(let i=0;i<nodes.length;i++){
             matrix[i]  = [];
             for(let j=0;j<nodes.length;j++){
-                matrix[i][j] =[];
-                matrix[i][j].push([i,j,0]);
+                matrix[i][j] =0;
+                // matrix[i][j].push([i,j,0]);
 
             }
         }
@@ -101,24 +97,68 @@
             for(let j=0;j<nodes.length;j++){
                 for(let k=0;k<links.length;k++){
                     if(nodes[i].id==links[k].startNode && nodes[j].id == links[k].endNode){
-                        matrix[i][j][2] = 1;
-                        console.log(i,j);
+                        matrix[i][j] = 1;
+                        matrix[j][i] = 1;
+                        // matrix[i][j][2] = 1;
+                        // console.log(i,j);
 
                     }
                 }
             }
         }
-        let setA=new Set();
+      /*  let setA=new Set();
         setA.add(links[0].startNode);
         setA.add(links[0].endNode);
         for(let i=1;i<links.length;i++){
             for(let j=0;j<setA.size;j++){
-                if(links[i]==setA)
+                if(links[i]==setA){
                     setA.add(links[0].startNode);
-                setA.add(links[0].endNode);
+                    setA.add(links[0].endNode);
+                }
+
+            }
+        }*/
+        for(let i=0;i<nodes.length;i++){
+            // nodes[i].degree = Math.sum(matrix[i]);
+            let sum =0;
+            matrix[i].forEach(function(item,index,array){
+                sum += item;
+            });
+            nodes[i].degree = sum;
+
+        }
+
+        let lam= 1;
+
+        let xLong = 0;
+        let yLong = 0;
+        for(let i=0;i<centerNodes.length;i++){
+            xLong += checkIndex(centerNodes[i],nodes).position_X;
+            yLong += checkIndex(centerNodes[i],nodes).position_Y;
+        }
+    xLong = xLong/centerNodes.length;
+    yLong = yLong/centerNodes.length;
+
+    for(let i=0;i<centerNodes.length;i++){
+        let flag  = checkIndexId(centerNodes[i],nodes);
+        nodes[flag].position_X = xLong+ (nodes[flag].position_X-xLong)*(500/Math.abs(nodes[flag].position_X-xLong));
+        nodes[flag].position_Y = yLong + (nodes[flag].position_Y-yLong)*(500/Math.abs(nodes[flag].position_Y-yLong));
+    }
+    console.log(xLong,yLong);
+    for(let i=0;i<nodes.length;i++){
+        for(let j=0;j<nodes.length;j++){
+            if(matrix[i][j] == 1){
+                if(checkPoint(i,nodes,centerNodes)){
+                    nodes[j].position_X = nodes[i].position_X  + lam*(nodes[j].position_X-nodes[i].position_X)/2;
+                    nodes[j].position_Y = nodes[i].position_Y  + lam*(nodes[j].position_Y-nodes[i].position_Y)/2;
+                }else{
+                    nodes[i].position_X = nodes[j].position_X  + lam*(nodes[i].position_X-nodes[j].position_X)/2;
+                    nodes[i].position_Y = nodes[j].position_Y  +lam*(nodes[i].position_Y-nodes[j].position_Y)/2;
+                }
             }
         }
-        console.log(matrix);*/
+    }
+
 
 
 

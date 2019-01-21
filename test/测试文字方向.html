@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #canvas{
+            background-color: #f0ad4e;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="200" height="200">
+    <span>版本不支持</span>
+</canvas>
+<script>
+    const c = document.getElementById('canvas');
+    const ct = c.getContext('2d');
+
+    ct.fillStyle = "#000";
+    ct.translate(100,100);
+    ct.rotate(Math.PI);
+    ct.fillText('kankan',0,0);
+    ct.rotate(-Math.PI);
+    ct.translate(-100,-100);
+
+    ct.fill();
+
+</script>
+</body>
+</html>

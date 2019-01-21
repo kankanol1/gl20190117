@@ -159,6 +159,13 @@
             }
         }
     }
+function checkIndexId(id,nodes){
+    for(let i=0;i<nodes.length;i++){
+        if(id == nodes[i].id){
+            return i;
+        }
+    }
+}
 
 //通过id检查元素索引
 //绘制箭头

@@ -37,18 +37,18 @@
         function addData(){
             drawing(nodes,links,centerNodes)
         };
-        // let space = 100;//画布的旁白空间
+        let space = 100;//画布的旁白空间
 
 
 
 
 
         //随机布局
-      /*  for(let i=0;i<nodes.length;i++){
+        /*for(let i=0;i<nodes.length;i++){
             nodes[i].position_X = (c.width - 2 * space) * Math.random() + space;
             nodes[i].position_Y = (c.height - 2 * space) * Math.random() + space;
-        }*/
-
+        }
+*/
 
 
 
@@ -61,7 +61,7 @@
 
 
         //矩形布局
-    function rectangle(){
+   /* function rectangle(){
         let l=150;
         let juX = l;
         let juY = l;
@@ -77,48 +77,79 @@
 
         }
     }
-    rectangle();
+    rectangle();*/
 
-
-
-
-
-
-        //分图 重新绘制坐标点
-
-   /*     let matrix = [];
-        for(let i=0;i<nodes.length;i++){
-            matrix[i]  = [];
-            for(let j=0;j<nodes.length;j++){
-                matrix[i][j] =[];
-                matrix[i][j].push([i,j,0]);
-
-            }
+    let matrix = [];
+    for(let i=0;i<nodes.length;i++){
+        matrix[i]  = [];
+        for(let j=0;j<nodes.length;j++){
+            matrix[i][j] =0;
         }
-        // console.log(matrix[0][0][0]);
-
-        for(let i=0;i<nodes.length;i++){
-            for(let j=0;j<nodes.length;j++){
-                for(let k=0;k<links.length;k++){
-                    if(nodes[i].id==links[k].startNode && nodes[j].id == links[k].endNode){
-                        matrix[i][j][2] = 1;
-                        console.log(i,j);
-
-                    }
+    }
+    for(let i=0;i<nodes.length;i++){
+        for(let j=0;j<nodes.length;j++){
+            for(let k=0;k<links.length;k++){
+                if(nodes[i].id==links[k].startNode && nodes[j].id == links[k].endNode){
+                    matrix[i][j] = 1;
+                    matrix[j][i] = 1;
                 }
             }
         }
-        let setA=new Set();
-        setA.add(links[0].startNode);
-        setA.add(links[0].endNode);
-        for(let i=1;i<links.length;i++){
-            for(let j=0;j<setA.size;j++){
-                if(links[i]==setA)
-                    setA.add(links[0].startNode);
-                setA.add(links[0].endNode);
-            }
-        }
-        console.log(matrix);*/
+    }
+
+    for(let i=0;i<nodes.length;i++){
+        // nodes[i].degree = Math.sum(matrix[i]);
+        let sum =0;
+        matrix[i].forEach(function(item,index,array){
+            sum += item;
+        });
+        nodes[i].degree = sum;
+
+    }
+    R = 400;
+   for(let i=0;i<centerNodes.length;i++){
+        nodes[checkIndexId(centerNodes[i],nodes)].position_X = c.width/2 + R*Math.sin(i/centerNodes.length*2*Math.PI);
+        nodes[checkIndexId(centerNodes[i],nodes)].position_Y = c.height/2 + R*Math.cos(i/centerNodes.length*2*Math.PI);
+   }
+
+   //s失败
+/*   for(let i=0;i<nodes.length;i++){
+       for(let j=0;j<nodes.length;j++){
+           if(matrix[i][j] == 1 && nodes[i].degree==1){
+               console.log('测试');
+// console.log(!checkPoint(i,nodes,centerNodes) , checkPoint(j,nodes,centerNodes ));
+               if(!checkPoint(i,nodes,centerNodes) && checkPoint(j,nodes,centerNodes )){
+
+                   console.log('测试');
+                   nodes[i].position_X = nodes[j].position_X +(nodes[j].position_X-nodes[i].position_X)*100/Math.abs(nodes[j].position_X-nodes[i].position_X);
+                   nodes[i].position_Y = nodes[j].position_Y +(nodes[j].position_Y-nodes[i].position_Y)*100/Math.abs(nodes[j].position_Y-nodes[i].position_Y);
+               }
+           }
+       }
+   }*/
+    let xLong = 0;
+    let yLong = 0;
+    for(let i=0;i<centerNodes.length;i++){
+        xLong += checkIndex(centerNodes[i],nodes).position_X;
+        yLong += checkIndex(centerNodes[i],nodes).position_Y;
+    }
+    xLong = xLong/centerNodes.length;
+    yLong = yLong/centerNodes.length;
+   for(let i=0;i<centerNodes.length;i++){
+       let flag  = checkIndexId(centerNodes[i],nodes);
+       let alpha = Math.atan(Math.abs(yLong-nodes[flag].position_Y)/Math.abs(xLong-nodes[flag].position_X));
+       let n = 0;
+       for(let j=0;j<nodes.length;j++){
+           if(matrix[flag][j]==1 && nodes[j].degree==1){
+                   nodes[j].position_X =nodes[flag].position_X + 1.5*(nodes[flag].position_X-xLong)*Math.sin(alpha+n/nodes[flag].degree*Math.PI/2);
+                   nodes[j].position_Y =nodes[flag].position_Y + 1.5*(nodes[flag].position_Y-yLong)*Math.cos(alpha+n/nodes[flag].degree*Math.PI/2);
+                   // n  = n/Math.abs(n)*(Math.abs(n)+1);
+               n++;
+           }
+       }
+   }
+
+
 
 
 

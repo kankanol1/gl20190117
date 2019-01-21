@@ -128,7 +128,7 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 12px Arial";
+        ct.font = "lighter 18px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }

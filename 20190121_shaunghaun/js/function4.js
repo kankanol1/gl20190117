@@ -128,7 +128,7 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 18px Arial";
+        ct.font = "lighter 20px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }
@@ -159,6 +159,14 @@
             }
         }
     }
+//根据id检测节点索引
+function checkIndexId(id,nodes){
+    for(let i=0;i<nodes.length;i++){
+        if(id == nodes[i].id){
+            return i;
+        }
+    }
+}
 
 //通过id检查元素索引
 //绘制箭头

@@ -9,8 +9,8 @@
     let ct;
 
 //固定画布大小
-    c.width = 2000;
-    c.height = 2000;
+    c.width = 1000;
+    c.height = 700;
     if(c.getContext){
         ct = c.getContext('2d');
     }else{
@@ -128,7 +128,7 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 18px Arial";
+        ct.font = "lighter 12px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }

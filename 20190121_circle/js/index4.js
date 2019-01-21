@@ -26,8 +26,7 @@
 
     /**************************************************数据加载和应用************************************************/
 
-    // $.getJSON('./json/data.json','',function(dataInfo){
-        var dataInfo = data;
+    $.getJSON('./json/data.json','',function(dataInfo){
         dataC = dataInfo.data;
         console.log(dataC);//检验是否读取数据
         let links = dataC.links,
@@ -37,50 +36,22 @@
         function addData(){
             drawing(nodes,links,centerNodes)
         };
-        // let space = 100;//画布的旁白空间
-
-
-
-
-
-        //随机布局
+        let space = 100;//画布的旁白空间
+        // ct.scale(0.5);
+        //随机添加节点坐标
       /*  for(let i=0;i<nodes.length;i++){
             nodes[i].position_X = (c.width - 2 * space) * Math.random() + space;
             nodes[i].position_Y = (c.height - 2 * space) * Math.random() + space;
         }*/
+        // ct.translate(c.width/2,c.height/2);
+        let R = 15*nodes.length;
 
 
-
-
-        //圆型布局
-        // let R = 15*nodes.length;
-        // for(let i=0;i<nodes.length;i++){
-        //     nodes[i].position_X = c.width/2 + R*Math.sin(i*nodes.length/360);
-        //     nodes[i].position_Y =c.height/2 + R*Math.cos(i*nodes.length/360);
-        // }
-
-
-        //矩形布局
-    function rectangle(){
-        let l=150;
-        let juX = l;
-        let juY = l;
         for(let i=0;i<nodes.length;i++){
-            if(i%10 == 9){
-                juY = juY +l;
-                juX = l;
-            }else{
-                nodes[i].position_X = juX;
-                nodes[i].position_Y =juY;
-                juX  = juX+l;
-            }
-
+            nodes[i].position_X = c.width/2 + R*Math.cos(i/nodes.length*2*Math.PI);
+            nodes[i].position_Y = c.height/2 + R*Math.sin(i/nodes.length*2*Math.PI);
         }
-    }
-    rectangle();
-
-
-
+        // console.log(nodes);
 
 
 
@@ -395,7 +366,7 @@
             }
         }
 
-    // });
+    });
 
 })();
 

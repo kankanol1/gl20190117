@@ -9,8 +9,8 @@
     let ct;
 
     //固定画布大小
-    c.width = 2000;
-    c.height =2000;
+    c.width = 1000;
+    c.height = 700;
     if(c.getContext){
         ct = c.getContext('2d');
     }else{
@@ -37,23 +37,12 @@
             drawing(nodes,links,centerNodes)
         };
         let space = 100;//画布的旁白空间
-        // ct.scale(0.5);
+
         //随机添加节点坐标
-      /*  for(let i=0;i<nodes.length;i++){
+        for(let i=0;i<nodes.length;i++){
             nodes[i].position_X = (c.width - 2 * space) * Math.random() + space;
             nodes[i].position_Y = (c.height - 2 * space) * Math.random() + space;
-        }*/
-        // ct.translate(c.width/2,c.height/2);
-        let R = 15*nodes.length;
-
-
-        for(let i=0;i<nodes.length;i++){
-            nodes[i].position_X = c.width/2 + R*Math.sin(i*nodes.length/360);
-            nodes[i].position_Y =c.height/2 + R*Math.cos(i*nodes.length/360);
         }
-        // console.log(nodes);
-
-
 
         //分图 重新绘制坐标点
 
@@ -131,7 +120,7 @@
                     }
                 }
                 if(flag >-1){
-                    // console.log(idNum);
+                    console.log(idNum);
                     ct.beginPath();
                     ct.fillStyle = "red";
                     ct.arc(nodes[flag].position_X,nodes[flag].position_Y,radius*0.5,0,Math.PI*2);

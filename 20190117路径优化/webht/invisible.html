@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HT for Web</title>
+        <style media="screen">
+            @media screen and (min-resolution: 2dppx) {}
+        </style>
+        <script src="./ht.js"></script>
+        <script src="./ht-autolayout.js"></script>
+        <script src="./ht-form.js"></script>
+        <script src="./CreateNodes.js"></script>
+        <script src="./CreateFormPane.js"></script>
+        <script src="./Easing.js"></script>
+        <script>
+            window.matchMedia('screen and (min-resolution: 2dppx)').
+                addListener(function() {
+                    ht.Default.setDevicePixelRatio();
+                });
+            var init = function() {
+                var g2d = new ht.graph.GraphView(),
+                    dm = g2d.dm();
+                g2d.addToDOM();
+                g2d.getLabel = function(data) {
+                    if (data.s('label'))
+                        return data.s('label');
+                    if (data instanceof ht.Edge)
+                        return "from:" + data.getSourceAgent().toString() + " to:" + data.getTargetAgent().toString();
+                    return data.toString();
+                };
+                var state = {};
+                g2d.isLabelVisible = function(data) {
+                    return !state.zooming && !state.panning && !state.autoLayout;
+                };
+                g2d.onAutoLayoutEnded = function() {
+                    state.autoLayout = false;
+                };
+                g2d.onZoomEnded = function() {
+                    state.zooming = false;
+                };
+                var timer = null;
+                g2d.mp(function(e) {
+                    if (e.property === 'zoom') {
+                        state.zooming = true;
+                        if (timer)
+                            clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            timer = null;
+                            state.zooming = false;
+                            g2d.redraw();
+                        }, 100);
+                    }
+                });
+                g2d.mi(function(e) {
+                    if (e.kind === 'beginPan')
+                        state.panning = true;
+                    if (e.kind === 'endPan') {
+                        state.panning = false;
+                        g2d.redraw();
+                    }
+                });
+
+                createNodes(dm);
+                var autoLayout = new ht.layout.AutoLayout(g2d);
+                autoLayout.setAnimate(true);
+                state.zooming = true;
+                state.autoLayout = true;
+                autoLayout.layout('symmetric', function() {
+                    g2d.fitContent(true);
+                });
+
+                createFormPane(g2d, autoLayout, state);
+            };
+        </script>
+    </head>
+    <body onload="init();">
+    </body>
+</html>

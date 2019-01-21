@@ -7,14 +7,17 @@
     padding: 0;
     margin: 0;
 }
+body{
+    height: 2500px;
+}
 #canvas{
     border: 1px solid #f0ad4e;
     /*margin: 50px;*/
 }
 #box{
     /*border: 2px solid black;*/
-    width: 1000px;
-    height: 700px;
+    width: 2000px;
+    height: 2000px;
     margin: 0 auto;
     position: relative;
 }
@@ -77,5 +80,5 @@ div.pay p span{
 #searchId{
     position: relative;
     left: 0;
-    top: -700px;
+    top: -2000px;
 }
