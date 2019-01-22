@@ -9,8 +9,8 @@
     let ct;
 
 //固定画布大小
-    c.width = 2000;
-    c.height = 2000;
+    c.width = 1000;
+    c.height = 1000;
     if(c.getContext){
         ct = c.getContext('2d');
     }else{
@@ -19,8 +19,8 @@
 
 //画笔初始参数设置；
     let dataC,
-        radius = 20,
-        lineWidth = 5,
+        radius = 10,
+        lineWidth = 4,
         oBox = document.getElementById('box');
 
 
@@ -128,7 +128,7 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 18px Arial";
+        ct.font = "lighter 10px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }
@@ -162,11 +162,12 @@
 
 //通过id检查元素索引
 //绘制箭头
+let triC = 6;
     function drawTriangleRB(x,y,alpha,beta){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x+10*Math.cos(beta - Math.PI/6),y+10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x+10*Math.sin(alpha - Math.PI/6),y+10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x+triC*Math.cos(beta - Math.PI/6),y+triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x+triC*Math.sin(alpha - Math.PI/6),y+triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -174,8 +175,8 @@
     function drawTriangleRT(x,y,beta,alpha){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x+10*Math.sin(beta - Math.PI/6),y-10*Math.cos(beta -Math.PI/6));
-        ct.lineTo(x+10*Math.cos(alpha - Math.PI/6),y-10*Math.sin(alpha - Math.PI/6));
+        ct.lineTo(x+triC*Math.sin(beta - Math.PI/6),y-triC*Math.cos(beta -Math.PI/6));
+        ct.lineTo(x+triC*Math.cos(alpha - Math.PI/6),y-triC*Math.sin(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -183,16 +184,16 @@
     function drawTriangleLB(x,y,alpha,beta){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x-10*Math.cos(beta - Math.PI/6),y+10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x-10*Math.sin(alpha - Math.PI/6),y+10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x-triC*Math.cos(beta - Math.PI/6),y+triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x-triC*Math.sin(alpha - Math.PI/6),y+triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
     }
     function drawTriangleLT(x,y,alpha,beta){
 
-        ct.lineTo(x-10*Math.cos(beta - Math.PI/6),y-10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x-10*Math.sin(alpha - Math.PI/6),y-10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x-triC*Math.cos(beta - Math.PI/6),y-triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x-triC*Math.sin(alpha - Math.PI/6),y-triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -200,7 +201,7 @@
 //绘制连线
     function drawLine(nodeO,nodeT,pay){
         ct.beginPath();
-        ct.lineWidth = 1;
+        ct.lineWidth = 0.5;
         ct.strokeStyle = "#666";
         ct.fillStyle = "#666";
         let mdx = Math.abs(nodeO.position_X+nodeT.position_X)/2;

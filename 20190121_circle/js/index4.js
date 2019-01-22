@@ -9,8 +9,8 @@
     let ct;
 
     //固定画布大小
-    c.width = 2000;
-    c.height =2000;
+    c.width = 1000;
+    c.height =1000;
     if(c.getContext){
         ct = c.getContext('2d');
     }else{
@@ -19,8 +19,8 @@
 
     //画笔初始参数设置；
     let dataC,
-        radius = 20,
-        lineWidth = 5,
+        radius = 10,
+        lineWidth = 4,
         oBox = document.getElementById('box');
 
 
@@ -44,7 +44,7 @@
             nodes[i].position_Y = (c.height - 2 * space) * Math.random() + space;
         }*/
         // ct.translate(c.width/2,c.height/2);
-        let R = 15*nodes.length;
+        let R = 5*nodes.length;
 
 
         for(let i=0;i<nodes.length;i++){

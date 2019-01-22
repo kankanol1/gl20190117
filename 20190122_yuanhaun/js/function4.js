@@ -19,8 +19,8 @@
 
 //画笔初始参数设置；
     let dataC,
-        radius = 10,
-        lineWidth = 4,
+        radius = 8,
+        lineWidth = 3,
         oBox = document.getElementById('box');
 
 
@@ -128,10 +128,18 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 10px Arial";
+        ct.font = "lighter 9px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }
+//字体设置
+function setFontPay(){
+    ct.fillStyle = "#333";
+    ct.strokeStyle = "#333";
+    ct.font = "lighter 8px Arial";
+    ct.textAlign = "center";
+    ct.textBaseline = "middle";
+}
 //设置title样式
     function setTitle(){
         ct.fillStyle = "#000";
@@ -151,7 +159,7 @@
         return flag;
     }
 
-//根据id检测节点索引
+//根据id检测节点
     function checkIndex(id,nodes){
         for(let i=0;i<nodes.length;i++){
             if(id == nodes[i].id){
@@ -159,8 +167,16 @@
             }
         }
     }
+//根据id检测节点索引
+function checkIndexId(id,nodes){
+    for(let i=0;i<nodes.length;i++){
+        if(id == nodes[i].id){
+            return i;
+        }
+    }
+}
 
-//通过id检查元素索引
+
 //绘制箭头
 let triC = 6;
     function drawTriangleRB(x,y,alpha,beta){
@@ -228,6 +244,7 @@ let triC = 6;
 
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha- Math.PI/2));
+            setFontPay();
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate((alpha- Math.PI/2));
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -241,6 +258,8 @@ let triC = 6;
 
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(alpha-Math.PI/2);
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(-(alpha-Math.PI/2));
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -253,6 +272,8 @@ let triC = 6;
             drawTriangleLB(nodeT.position_X - Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5,alpha,beta)
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(alpha-Math.PI/2);
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(-alpha+Math.PI/2);
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -265,18 +286,20 @@ let triC = 6;
             drawTriangleLT(nodeT.position_X - Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  - Math.cos(alpha) * (radius+5)*0.5,alpha,beta)
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha-Math.PI/2));
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(alpha-Math.PI/2);
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
         }
         ct.stroke();
         ct.fill();
-        ct.lineWidth = 5;
+        ct.lineWidth = 3;
     }
     function drawLineTwo(nodeO,nodeT,pay){
         let textL = 25;
         ct.beginPath();
-        ct.lineWidth = 1;
+        ct.lineWidth = 0.5;
         ct.strokeStyle = "red";
         ct.fillStyle = "red";
         let mdx = Math.abs(nodeO.position_X+nodeT.position_X)/2;
@@ -294,7 +317,6 @@ let triC = 6;
 
             ct.lineTo(nodeT.position_X + Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5);
             drawTriangleRB(nodeT.position_X + Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5,alpha,beta);
-
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha- Math.PI/2));
             ct.fillText("支付("+pay+")",0,0);
@@ -336,7 +358,7 @@ let triC = 6;
 
         ct.stroke();
         ct.fill();
-        ct.lineWidth = 5;
+        ct.lineWidth = 3;
     }
 //绘制图形
     function drawing(nodes,links,centerNodes){

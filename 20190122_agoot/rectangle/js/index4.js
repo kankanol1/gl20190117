@@ -5,6 +5,9 @@
 (function(){
     const searchDiv = document.getElementById("searchId");
     const searchInput = document.getElementById('search');
+    const inputRandom = document.getElementById('random');
+    const inputCross= document.getElementById('cross');
+    const inputSymmetric = document.getElementById('symmetric');
     const c = document.getElementById('canvas');
     let ct;
 
@@ -20,9 +23,17 @@
     //画笔初始参数设置；
     let dataC,
         radius = 10,
-        lineWidth = 4,
+        lineWidth = 3,
         oBox = document.getElementById('box');
 
+
+
+    Array.prototype.insert = function (index, item) {  this.splice(index, 0, item);  };
+    Array.prototype.sum = function (){
+        return this.reduce(function (partial, value){
+            return partial + value;
+        })
+    };
 
     /**************************************************数据加载和应用************************************************/
 
@@ -34,10 +45,9 @@
             nodes = dataC.nodes,
             centerNodes = dataC.centerNodes;
         nodes = checkData(nodes);// 去重
-        function addData(){
-            drawing(nodes,links,centerNodes)
-        };
-        // let space = 100;//画布的旁白空间
+    let nodesSection = nodes;
+
+        let space = 100;//画布的旁白空间
 
 
 
@@ -61,14 +71,21 @@
 
 
         //矩形布局
+
+
+
+
     function rectangle(){
-        let l=100;
+        let l=90;
         let juX = l;
         let juY = l;
         for(let i=0;i<nodes.length;i++){
             if(i%10 == 9){
+                nodes[i].position_X = juX;
+                nodes[i].position_Y =juY;
                 juY = juY +l;
                 juX = l;
+
             }else{
                 nodes[i].position_X = juX;
                 nodes[i].position_Y =juY;
@@ -79,12 +96,121 @@
     }
     rectangle();
 
+        //优化一下
+
+    //圆环布局
+    let matrix = [];
+    function setMatrix(){
+        for(let i=0;i<nodes.length;i++){
+            matrix[i]  = [];
+            for(let j=0;j<nodes.length;j++){
+                matrix[i][j] =0;
+            }
+        }
+        for(let i=0;i<nodes.length;i++){
+            for(let j=0;j<nodes.length;j++){
+                for(let k=0;k<links.length;k++){
+                    if(nodes[i].id==links[k].startNode && nodes[j].id == links[k].endNode){
+                        matrix[i][j] = 1;
+                        matrix[j][i] = 1;
+                    }
+                }
+            }
+        }
+
+
+    }
+    setMatrix();
+    for(let i=0;i<nodes.length;i++){
+        // nodes[i].degree = Math.sum(matrix[i]);
+        let sum =0;
+        matrix[i].forEach(function(item,index,array){
+            sum += item;
+        });
+        nodes[i].degree = sum;
+
+    }
+
+
+    // console.log(matrix);
+
+    function methodRandom(){
+        nodes = nodesSection;
+        rectangle();
+
+    }
+    function methodCross(matrixV){
+        let nodesData = [];
+        for(let i=0;i<nodes.length;i++){
+            if(checkPoint(i,nodes,centerNodes)){
+                nodesData.push(nodes[i]);
+                for(let j=0;j<nodes.length;j++){
+                    if(matrixV[i][j]){
+                        nodesData.push(nodes[j]);
+                        for(let k=0;k<nodes.length;k++){
+                            matrixV[k][j]=0;
+                            matrixV[j][k]=0;
+                        }
+                    }
+                }
+            }
+        }
+        nodes = nodesData;
+        console.log(nodesData.length);
+        rectangle();
+    }
+    function methodSymmetric(matrixV){
+        let nodesData = [];
+        for(let i=0;i<nodes.length;i++){
+            if(checkPoint(i,nodes,centerNodes)){
+                let degree =0;
+                for(let j=0;j<nodes.length;j++){
+                    if(matrixV[i][j]){
+                        // console.log(matrixV[i][j]);
+                        nodesData.push(nodes[j]);
+                        degree++;
+                        for(let k=0;k<nodes.length;k++){
+                            matrix[k][j]=0;
+                            matrix[j][k]=0;
+                        }
+                    }
+                }
+                nodesData.insert(Math.round(nodesData.length - degree/2),nodes[i]);
+            }
+        }
+        nodes = nodesData;
+        rectangle();
+
+    }
+
+    // methodTwo();
+    // methodThree();
+    inputRandom.addEventListener('click',function(){
+        // setMatrix();
+        methodRandom();
+        drawing(nodes,links,centerNodes);//绘制图形
+        //搜索框事件
+    });
+    inputCross.addEventListener('click',function(){
+        setMatrix();
+        methodCross(matrix);
+        drawing(nodes,links,centerNodes);//绘制图形
+        //搜索框事件
+    });
+    inputSymmetric.addEventListener('click',function(){
+        setMatrix();
+        methodSymmetric(matrix);
+        drawing(nodes,links,centerNodes);//绘制图形
+        //搜索框事件
+    });
 
 
 
 
 
-        //分图 重新绘制坐标点
+
+
+    //分图 重新绘制坐标点
 
    /*     let matrix = [];
         for(let i=0;i<nodes.length;i++){
@@ -203,8 +329,8 @@
                     var event = ev || event;
                     var x = event.clientX - c.getBoundingClientRect().left;
                     var y = event.clientY - c.getBoundingClientRect().top;
-                    nodes[sq].position_X = x;
-                    nodes[sq].position_Y = y;
+                    // nodes[sq].position_X = x;
+                    // nodes[sq].position_Y = y;
 
                     document.onmousemove = document.onmouseup = null;
                     let newTime = (new Date()).getTime();
@@ -361,7 +487,7 @@
 
                         ct.beginPath();
                         ct.strokeStyle = "#dd63c5";
-                        ct.lineWidth = 5;
+                        ct.lineWidth = 3;
                         ct.arc(nodes[flag].position_X,nodes[flag].position_Y, nodes[flag].radius, 0, Math.PI * 2);
                         ct.stroke();
                     }else{

@@ -9,8 +9,8 @@
     let ct;
 
 //固定画布大小
-    c.width = 2000;
-    c.height = 2000;
+    c.width = 1000;
+    c.height = 1000;
     if(c.getContext){
         ct = c.getContext('2d');
     }else{
@@ -19,8 +19,8 @@
 
 //画笔初始参数设置；
     let dataC,
-        radius = 20,
-        lineWidth = 5,
+        radius = 8,
+        lineWidth = 3,
         oBox = document.getElementById('box');
 
 
@@ -128,10 +128,18 @@
 //字体设置
     function setFont(){
         ct.fillStyle = "#000";
-        ct.font = "lighter 20px Arial";
+        ct.font = "lighter 9px Arial";
         ct.textAlign = "center";
         ct.textBaseline = "middle";
     }
+//字体设置
+function setFontPay(){
+    ct.fillStyle = "#333";
+    ct.strokeStyle = "#333";
+    ct.font = "lighter 8px Arial";
+    ct.textAlign = "center";
+    ct.textBaseline = "middle";
+}
 //设置title样式
     function setTitle(){
         ct.fillStyle = "#000";
@@ -151,7 +159,7 @@
         return flag;
     }
 
-//根据id检测节点索引
+//根据id检测节点
     function checkIndex(id,nodes){
         for(let i=0;i<nodes.length;i++){
             if(id == nodes[i].id){
@@ -168,13 +176,14 @@ function checkIndexId(id,nodes){
     }
 }
 
-//通过id检查元素索引
+
 //绘制箭头
+let triC = 6;
     function drawTriangleRB(x,y,alpha,beta){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x+10*Math.cos(beta - Math.PI/6),y+10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x+10*Math.sin(alpha - Math.PI/6),y+10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x+triC*Math.cos(beta - Math.PI/6),y+triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x+triC*Math.sin(alpha - Math.PI/6),y+triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -182,8 +191,8 @@ function checkIndexId(id,nodes){
     function drawTriangleRT(x,y,beta,alpha){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x+10*Math.sin(beta - Math.PI/6),y-10*Math.cos(beta -Math.PI/6));
-        ct.lineTo(x+10*Math.cos(alpha - Math.PI/6),y-10*Math.sin(alpha - Math.PI/6));
+        ct.lineTo(x+triC*Math.sin(beta - Math.PI/6),y-triC*Math.cos(beta -Math.PI/6));
+        ct.lineTo(x+triC*Math.cos(alpha - Math.PI/6),y-triC*Math.sin(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -191,16 +200,16 @@ function checkIndexId(id,nodes){
     function drawTriangleLB(x,y,alpha,beta){
         // ct.strokeStyle = "#666";
         // ct.fillStyle = "#666";
-        ct.lineTo(x-10*Math.cos(beta - Math.PI/6),y+10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x-10*Math.sin(alpha - Math.PI/6),y+10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x-triC*Math.cos(beta - Math.PI/6),y+triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x-triC*Math.sin(alpha - Math.PI/6),y+triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
     }
     function drawTriangleLT(x,y,alpha,beta){
 
-        ct.lineTo(x-10*Math.cos(beta - Math.PI/6),y-10*Math.sin(beta -Math.PI/6));
-        ct.lineTo(x-10*Math.sin(alpha - Math.PI/6),y-10*Math.cos(alpha - Math.PI/6));
+        ct.lineTo(x-triC*Math.cos(beta - Math.PI/6),y-triC*Math.sin(beta -Math.PI/6));
+        ct.lineTo(x-triC*Math.sin(alpha - Math.PI/6),y-triC*Math.cos(alpha - Math.PI/6));
         ct.lineTo(x,y);
         ct.stroke();
         ct.fill();
@@ -208,9 +217,9 @@ function checkIndexId(id,nodes){
 //绘制连线
     function drawLine(nodeO,nodeT,pay){
         ct.beginPath();
-        ct.lineWidth = 1;
-        ct.strokeStyle = "#666";
-        ct.fillStyle = "#666";
+        ct.lineWidth = 0.5;
+        ct.strokeStyle = "#999";
+        ct.fillStyle = "#999";
         let mdx = Math.abs(nodeO.position_X+nodeT.position_X)/2;
         let mdy = Math.abs(nodeO.position_Y+nodeT.position_Y)/2;
         let alpha = Math.atan(Math.abs(nodeO.position_X-nodeT.position_X)/Math.abs(nodeO.position_Y-nodeT.position_Y));
@@ -235,6 +244,7 @@ function checkIndexId(id,nodes){
 
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha- Math.PI/2));
+            setFontPay();
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate((alpha- Math.PI/2));
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -248,6 +258,8 @@ function checkIndexId(id,nodes){
 
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(alpha-Math.PI/2);
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(-(alpha-Math.PI/2));
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -260,6 +272,8 @@ function checkIndexId(id,nodes){
             drawTriangleLB(nodeT.position_X - Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5,alpha,beta)
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(alpha-Math.PI/2);
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(-alpha+Math.PI/2);
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
@@ -272,18 +286,20 @@ function checkIndexId(id,nodes){
             drawTriangleLT(nodeT.position_X - Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  - Math.cos(alpha) * (radius+5)*0.5,alpha,beta)
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha-Math.PI/2));
+            setFontPay();
+
             ct.fillText("支付("+pay+")",0,0);
             ct.rotate(alpha-Math.PI/2);
             ct.translate(-(nodeO.position_X+nodeT.position_X)/2,-(nodeO.position_Y+nodeT.position_Y)/2);
         }
         ct.stroke();
         ct.fill();
-        ct.lineWidth = 5;
+        ct.lineWidth = 4;
     }
     function drawLineTwo(nodeO,nodeT,pay){
         let textL = 25;
         ct.beginPath();
-        ct.lineWidth = 1;
+        ct.lineWidth = 0.5;
         ct.strokeStyle = "red";
         ct.fillStyle = "red";
         let mdx = Math.abs(nodeO.position_X+nodeT.position_X)/2;
@@ -342,7 +358,7 @@ function checkIndexId(id,nodes){
 
         ct.stroke();
         ct.fill();
-        ct.lineWidth = 5;
+        ct.lineWidth = 4;
     }
 //绘制图形
     function drawing(nodes,links,centerNodes){

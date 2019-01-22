@@ -8,7 +8,7 @@
     margin: 0;
 }
 body{
-    height: 2500px;
+    height: 2000px;
 }
 #canvas{
     border: 1px solid #f0ad4e;
@@ -16,8 +16,8 @@ body{
 }
 #box{
     /*border: 2px solid black;*/
-    width: 2000px;
-    height: 2000px;
+    width: 1000px;
+    height: 1000px;
     margin: 0 auto;
     position: relative;
 }
@@ -80,5 +80,5 @@ div.pay p span{
 #searchId{
     position: relative;
     left: 0;
-    top: -2000px;
+    top: -1000px;
 }

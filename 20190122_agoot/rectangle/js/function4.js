@@ -20,7 +20,7 @@
 //画笔初始参数设置；
     let dataC,
         radius = 10,
-        lineWidth = 4,
+        lineWidth = 3,
         oBox = document.getElementById('box');
 
 
@@ -340,6 +340,7 @@ let triC = 6;
     }
 //绘制图形
     function drawing(nodes,links,centerNodes){
+        ct.clearRect(0,0,c.width,c.height);
         setTitle();
         ct.fillText("政企支付关系网络",c.width/2,40);
         for(let i=0;i<nodes.length;i++){

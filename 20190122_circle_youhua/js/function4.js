@@ -202,8 +202,8 @@ let triC = 6;
     function drawLine(nodeO,nodeT,pay){
         ct.beginPath();
         ct.lineWidth = 0.5;
-        ct.strokeStyle = "#999";
-        ct.fillStyle = "#999";
+        ct.strokeStyle = "#666";
+        ct.fillStyle = "#666";
         let mdx = Math.abs(nodeO.position_X+nodeT.position_X)/2;
         let mdy = Math.abs(nodeO.position_Y+nodeT.position_Y)/2;
         let alpha = Math.atan(Math.abs(nodeO.position_X-nodeT.position_X)/Math.abs(nodeO.position_Y-nodeT.position_Y));
@@ -294,7 +294,6 @@ let triC = 6;
 
             ct.lineTo(nodeT.position_X + Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5);
             drawTriangleRB(nodeT.position_X + Math.sin(alpha) *(radius+5)*0.5,nodeT.position_Y  + Math.cos(alpha) * (radius+5)*0.5,alpha,beta);
-
             ct.translate((nodeO.position_X+nodeT.position_X)/2,(nodeO.position_Y+nodeT.position_Y)/2);
             ct.rotate(-(alpha- Math.PI/2));
             ct.fillText("支付("+pay+")",0,0);
@@ -340,6 +339,7 @@ let triC = 6;
     }
 //绘制图形
     function drawing(nodes,links,centerNodes){
+        ct.clearRect(0,0,c.width,c.height);
         setTitle();
         ct.fillText("政企支付关系网络",c.width/2,40);
         for(let i=0;i<nodes.length;i++){
